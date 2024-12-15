@@ -5,7 +5,7 @@ from .views import (
     AccountListCreateView,
     DepositListCreateView,
     # TransactionListCreateView,
-    BankCustomerListCreateView,
+    # BankCustomerListCreateView,
     TransferAPIView,
     WithdrawListCreateView,
 )
@@ -15,7 +15,7 @@ urlpatterns = [
     path('customers/', CustomerListCreateView.as_view(), name='customer-list-create'),
     path('accounts/', AccountListCreateView.as_view(), name='account-list-create'),
     path('transactions/', TransferAPIView.as_view(), name='transaction-list-create'),
-    path('bank-customers/', BankCustomerListCreateView.as_view(), name='bankcustomer-list-create'),
+    # path('bank-customers/', BankCustomerListCreateView.as_view(), name='bankcustomer-list-create'),
     path('withdraw/', WithdrawListCreateView.as_view(), name='withdraw-list-create'),
     path('deposit/', DepositListCreateView.as_view(), name='deposit-list-create'),
 ]

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from api.models import User
-from .models import Bank, Customer, Account, Deposit, Transaction, BankCustomer, Withdraw
+from .models import Bank, Customer, Account, Deposit, Transaction, Withdraw
 
 
 class TransactionSerializer(serializers.ModelSerializer):
@@ -18,19 +18,20 @@ class AccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = ['id', 'account_type', 'balance', 'bank', 'transactions']
 
-class BankCustomerSerializer(serializers.ModelSerializer):
-    customer = serializers.StringRelatedField()
-    bank = serializers.StringRelatedField()
+# class BankCustomerSerializer(serializers.ModelSerializer):
+#     customer = serializers.StringRelatedField()
+#     bank = serializers.StringRelatedField()
 
-    class Meta:
-        model = BankCustomer
-        fields = ['id', 'bank', 'customer']
+#     class Meta:
+#         model = BankCustomer
+#         fields = ['id', 'bank', 'customer']
 
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ['id', 'customer_name', 'contact_info', 'accounts']  
+        depth = 3
         
 class BankSerializer(serializers.ModelSerializer):
     accounts = AccountSerializer(many=True, read_only=True)  # Use the related_name 'accounts'

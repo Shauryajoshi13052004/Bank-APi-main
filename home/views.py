@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import Bank, Customer, Account, Deposit, Transaction, BankCustomer, Withdraw
-from .serializers import BankSerializer,CustomerSerializer,AccountSerializer,DepositSerializer,TransactionSerializer,BankCustomerSerializer,WithdrawSerializer
+from .models import Bank, Customer, Account, Deposit, Transaction, Withdraw
+from .serializers import BankSerializer,CustomerSerializer,AccountSerializer,DepositSerializer,TransactionSerializer,WithdrawSerializer
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -27,8 +27,9 @@ class BankListCreateView(generics.ListCreateAPIView):
 
 
 class CustomerListCreateView(generics.ListCreateAPIView):
-    serializer_class = CustomerSerializer
     permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]  
+    serializer_class = CustomerSerializer
 
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
@@ -43,12 +44,12 @@ class AccountListCreateView(generics.ListCreateAPIView):
 
 
 
-class BankCustomerListCreateView(generics.ListCreateAPIView):
-    authentication_classes = [JWTAuthentication]  
-    permission_classes = [IsAuthenticated] 
+# class BankCustomerListCreateView(generics.ListCreateAPIView):
+#     authentication_classes = [JWTAuthentication]  
+#     permission_classes = [IsAuthenticated] 
 
-    queryset = BankCustomer.objects.all()
-    serializer_class = BankCustomerSerializer
+#     queryset = BankCustomer.objects.all()
+#     serializer_class = BankCustomerSerializer
 
 
 class DepositListCreateView(generics.ListCreateAPIView):
