@@ -8,6 +8,14 @@ from .models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import check_password
 
+# serializers.py
+from rest_framework import serializers
+from .models import User
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name', 'is_active', 'is_staff', 'date_joined','is_verified']
 
 
 
@@ -35,7 +43,8 @@ class RegisterSerializer(serializers.Serializer):
         first_name = validated_data['first_name'],
         last_name = validated_data['last_name'],
         email = validated_data['email'],
-        username = validated_data['username']
+        username = validated_data['username'],
+        is_verified=False,
         )
 
         user.set_password(validated_data['password'])

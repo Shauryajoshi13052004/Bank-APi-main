@@ -1,3 +1,4 @@
+from venv import logger
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -5,12 +6,33 @@ from rest_framework import status
 from .serializers import LoginSerializer, RegisterSerializer
 from rest_framework.permissions import AllowAny
 
+
+
+
+# views.py
+from rest_framework import generics
+from .models import User
+from .serializers import UserSerializer
+
+class UserListCreateView(generics.ListCreateAPIView):
+    permission_classes = [AllowAny]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [AllowAny]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
 class RegisterView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
         try:
             data = request.data
             serializer = RegisterSerializer(data=data)  
+            
+
 
             if not serializer.is_valid():
                 return Response({
@@ -19,8 +41,8 @@ class RegisterView(APIView):
                 }, status=status.HTTP_400_BAD_REQUEST)
 
             user = serializer.save()
-            # user = User.objects.get()
-            # send_otp_via_email(user.email)
+            user.is_verified = False
+            user.save()
 
             return Response({
                 'data': {},
@@ -43,7 +65,7 @@ class LoginView(APIView):
         try:
             data = request.data
             serializer = LoginSerializer(data=data)
-
+         
             if not serializer.is_valid():
                 return Response({
                     'data': serializer.errors,
@@ -57,6 +79,8 @@ class LoginView(APIView):
             }, status=status.HTTP_200_OK)
 
         except Exception as e:
+            import traceback
+            logger.error(f'error is loginview:{traceback.format_exc()}')
             print(f"Unexpected Error: {e}")
             return Response({
                 'data': {},

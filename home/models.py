@@ -15,6 +15,7 @@ class Bank(models.Model):
 
 
 class Customer(models.Model):
+    
     customer_name = models.CharField(max_length=100)
     contact_info = models.CharField(max_length=255, null=True, blank=True)
 

@@ -1,30 +1,25 @@
 from django.db import models
 from django.db import models
-from django.contrib.auth.models import User
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser,PermissionsMixin
 from django.dispatch import receiver
 
 from api.manger import UserManager
 
 
-class User(AbstractUser):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    email =models.EmailField(unique=True)
-    username = models.CharField(max_length=150, unique=True, null=True, blank=True)
-    password = models.CharField(max_length=100)
+class User(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    username = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(auto_now_add=True)
 
+    objects = UserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    objects = UserManager()
-
-    def name(self):
-        return self.first_name + ' ' + self.last_name
-
     def __str__(self):
         return self.email
-    
-
